@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.util.DBUtil;
+import org.example.util.SecSql;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,34 +64,45 @@ public class App {
       System.out.print("내용 : ");
       String body = sc.nextLine();
 
-      PreparedStatement pstmt = null;
+//      PreparedStatement pstmt = null;
+//
+//      try {
+//        String sql = "INSERT INTO article ";
+//        sql += "SET regDate = NOW(),";
+//        sql += "updateDate = NOW(),";
+//        sql += "title = '" + title + "',";
+//        sql += "`body`= '" + body + "';";
+//
+//        System.out.println(sql);
+//
+//        pstmt = conn.prepareStatement(sql);
+//
+//        int affectedRow = pstmt.executeUpdate();
+//
+//        System.out.println(affectedRow + "열에 적용됨");
+//
+//      } catch (SQLException e) {
+//        System.out.println("에러 2: " + e);
+//      } finally {
+//        try {
+//          if (pstmt != null && !pstmt.isClosed()) {
+//            pstmt.close();
+//          }
+//        } catch (SQLException e) {
+//          e.printStackTrace();
+//        }
+//      }
 
-      try {
-        String sql = "INSERT INTO article ";
-        sql += "SET regDate = NOW(),";
-        sql += "updateDate = NOW(),";
-        sql += "title = '" + title + "',";
-        sql += "`body`= '" + body + "';";
+      SecSql sql = new SecSql();
+      sql.append("INSERT INTO article");
+      sql.append("SET regDate = NOW(),");
+      sql.append("updateDate = NOW(),");
+      sql.append("title = ?,", title);
+      sql.append("`body` = ?;", body);
 
-        System.out.println(sql);
+      int id = DBUtil.insert(conn,sql);
 
-        pstmt = conn.prepareStatement(sql);
-
-        int affectedRow = pstmt.executeUpdate();
-
-        System.out.println(affectedRow + "열에 적용됨");
-
-      } catch (SQLException e) {
-        System.out.println("에러 2: " + e);
-      } finally {
-        try {
-          if (pstmt != null && !pstmt.isClosed()) {
-            pstmt.close();
-          }
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      }
+      System.out.println(id + "번 글이 생성됨");
 
     } else if (cmd.equals("article list")) {
       System.out.println("== 목록 ==");
