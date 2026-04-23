@@ -1,7 +1,6 @@
 package org.example.util;
 
 
-import org.example.SecSql;
 import org.example.exception.SQLErrorException;
 
 import java.sql.*;
