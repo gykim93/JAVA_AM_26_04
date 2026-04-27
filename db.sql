@@ -30,3 +30,43 @@ SELECT CONCAT('제목2', '2');
 SELECT SUBSTRING(RAND() * 1000 FROM 1 FOR 2);
 
 DELETE FROM article;
+
+
+# ------------- 멤버테이블
+CREATE TABLE `member` (
+                          id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                          regDate DATETIME NOT NULL,
+                          updateDate DATETIME NOT NULL,
+                          loginId CHAR(30) NOT NULL,
+                          loginPw CHAR(200) NOT NULL,
+                          `name` CHAR(100) NOT NULL
+);
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'test1',
+loginPw = 'test1',
+`name` = '회원1';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'test2',
+loginPw = 'test2',
+`name` = '회원2';
+
+DESC `member`;
+
+SELECT *
+FROM `member`;
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = CONCAT('loginId', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
+loginPw = CONCAT('loginPw', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
+`name` = CONCAT('name', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
+
+SELECT *
+FROM `member`;
