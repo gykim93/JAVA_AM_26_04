@@ -88,6 +88,7 @@ public class App {
         }
         break;
       }
+
       while (true) {
         System.out.print("비밀번호 : ");
         loginPw = sc.nextLine().trim();
@@ -96,6 +97,7 @@ public class App {
           System.out.println("비밀번호 똑바로 써");
           continue;
         }
+
         boolean loginCheckPw = true;
 
         while (true) {
@@ -106,7 +108,8 @@ public class App {
             System.out.println("비밀번호 확인 (똑바로 작성)");
             continue;
           }
-          if (loginPw.equals(loginCheckPw) == false) {
+
+          if (loginPw.equals(loginPwConfirm) == false) {
             System.out.println("비밀번호가 일치하지 않음");
             loginCheckPw = false;
           }
@@ -115,23 +118,22 @@ public class App {
         if (loginCheckPw) {
           break;
         }
-        while (true) {
-          System.out.print("이름 : ");
-          name = sc.nextLine().trim();
-          if (name.length() == 0 || name.contains(" ")) {
-            continue;
-          }
-          break;
+      }
+      while (true) {
+        System.out.print("이름 : ");
+        name = sc.nextLine().trim();
+        if (name.length() == 0 || name.contains(" ")) {
+          continue;
         }
         break;
       }
       SecSql sql = new SecSql();
       sql.append("INSERT INTO `member`");
       sql.append("SET regDate = NOW(),");
-      sql.append("SET updateDate = NOW(),");
+      sql.append("updateDate = NOW(),");
       sql.append("loginId = ?,", loginId);
       sql.append("loginPw = ?,", loginPw);
-      sql.append("name = ?;", name);
+      sql.append("`name` = ?;", name);
 
       int id = DBUtil.insert(conn, sql);
       System.out.println(id + "번 회원가입 완료!");
