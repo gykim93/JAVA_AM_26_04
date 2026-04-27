@@ -62,30 +62,14 @@ public class App {
       return -1;
     }
     MemberController memberController = new MemberController(sc, conn);
-    ArticleController articleController = new ArticleController();
+    ArticleController articleController = new ArticleController(sc, conn);
 
     if (cmd.equals("member join")) {
       memberController.doJoin();
     } else if (cmd.equals("article write")) {
-      System.out.println("== 글쓰기 ==");
-      System.out.print("제목 : ");
-      String title = sc.nextLine();
-      System.out.print("내용 : ");
-      String body = sc.nextLine();
-
-      SecSql sql = new SecSql();
-
-      sql.append("INSERT INTO article");
-      sql.append("SET regDate = NOW(),");
-      sql.append("updateDate = NOW(),");
-      sql.append("title = ?,", title);
-      sql.append("`body` = ?;", body);
-
-      int id = DBUtil.insert(conn, sql);
-
-      System.out.println(id + "번 글이 생성됨");
-
+      articleController.doWrite();
     } else if (cmd.equals("article list")) {
+      articleController.showList();
       System.out.println("== 목록 ==");
 
       List<Article> articles = new ArrayList<>();
@@ -110,6 +94,7 @@ public class App {
         System.out.printf("  %d     /   %s   \n", article.getId(), article.getTitle());
       }
     } else if (cmd.startsWith("article modify")) {
+      articleController.doModify();
 
       int id = 0;
 
@@ -179,6 +164,8 @@ public class App {
       System.out.println("내용 : " + article.getBody());
 
     } else if (cmd.startsWith("article delete")) {
+      articleController.doDelete();
+
       int id = 0;
 
       try {
