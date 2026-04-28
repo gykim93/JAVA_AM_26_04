@@ -80,17 +80,29 @@ FROM article;
 
 ##===============================###################### 테스트
 
-SELECT * FROM articl ORDER BY id DESC
+SELECT *
+FROM article
+ORDER BY id DESC;
+
+SELECT *
+FROM `member`;
+
+SELECT A.*, M.name AS extra__writer
+FROM article AS A
+         INNER JOIN `member` AS M
+                    ON A.memberId = M.id;
 
 
-    # 대량생성
+
+# article 대량생성
 INSERT INTO article
 SET regDate = NOW(),
-    updateDate = NOW(),
-    title = CONCAT('제목', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
-    `body` = CONCAT('내용', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
+updateDate = NOW(),
+memberId = 1,
+title = CONCAT('제목', SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
+`body` = CONCAT('내용', SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
 
-# 대량생성
+# member 대량생성
 INSERT INTO `member`
 SET regDate = NOW(),
 updateDate = NOW(),

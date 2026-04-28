@@ -68,9 +68,13 @@ public class ArticleController {
       System.out.println("번호는 정수로 입력해");
       return;
     }
-    Map<String, Object> articleMap = articleService.getArticleById(id);
-    if (articleMap.isEmpty()) {
+    Article article = articleService.getArticleById(id);
+    if (article == null) {
       System.out.println(id + "번 글은 없음");
+      return;
+    }
+    if (article.getMemberId() != Container.session.loginedMemberId) {
+      System.out.println("권한 없음");
       return;
     }
 
@@ -93,15 +97,13 @@ public class ArticleController {
       System.out.println("번호는 정수로 입력해");
       return;
     }
-    Map<String, Object> articleMap = articleService.getArticleById(id);
-    if (articleMap.isEmpty()) {
+    Article article = articleService.getArticleById(id);
+    if (article == null) {
       System.out.println(id + "번 글은 없음");
       return;
     }
 
     System.out.println("== 상세보기 ==");
-
-    Article article = new Article(articleMap);
 
     System.out.println("번호 : " + article.getId());
     System.out.println("작성날짜 : " + article.getRegDate());
@@ -127,9 +129,13 @@ public class ArticleController {
     }
     SecSql sql = new SecSql();
 
-    Map<String, Object> articleMap = articleService.getArticleById(id);
-    if (articleMap.isEmpty()) {
+    Article article = articleService.getArticleById(id);
+    if (article == null) {
       System.out.println(id + "번 글은 없음");
+      return;
+    }
+    if (article.getMemberId() != Container.session.loginedMemberId) {
+      System.out.println("권한 없음");
       return;
     }
     System.out.println("== 삭제 ==");
