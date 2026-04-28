@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.dto.Member;
 import org.example.service.MemberService;
 
 import java.sql.Connection;
@@ -87,5 +88,54 @@ public class MemberController {
     int id = memberService.doJoin(conn, loginId, loginPw, name);
 
     System.out.println(id + "번 회원 가입완료!");
+  }
+
+  public void login() {
+    String loginId = null;
+    String loginPw = null;
+
+    System.out.println("== 로그인 ==");
+    while (true) {
+      System.out.print("로그인 아이디 : ");
+      loginId = sc.nextLine().trim();
+
+      if (loginId.length() == 0 || loginId.contains(" ")) {
+        System.out.println("아이디를 똑바로 써주세요.");
+        continue;
+      }
+      boolean isLoginIdDup = memberService.isLoginIdDup(conn, loginId);
+
+      if (isLoginIdDup == false) {
+        System.out.println(loginId + "은(는)없음");
+        continue;
+      }
+      break;
+    }
+    Member member = memberService.getMemberByLoginId(conn, loginId);
+
+    int tryMaxCount = 3;
+    int tryCount = 0;
+
+    while (true) {
+      if (tryCount >= tryMaxCount) {
+        System.out.println("비밀번호 확인하고 다시 시도!");
+        break;
+      }
+      System.out.print("비밀번호 : ");
+      loginPw = sc.nextLine().trim();
+
+      if (loginPw.length() == 0 || loginPw.contains(" ")) {
+        tryCount++;
+        System.out.printf("비밀번호를 똑바로 작성 (%d/3)\n", tryCount);
+        continue;
+      }
+      if (member.getLoginPw().equals(loginPw) == false) {
+        tryCount++;
+        System.out.printf("비밀번호를 똑바로 작성 (%d/3)\n", tryCount);
+        continue;
+      }
+      System.out.println(member.getName() + "님, 로그인 성공!");
+      break;
+    }
   }
 }
